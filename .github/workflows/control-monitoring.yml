@@ -1,0 +1,20 @@
+name: Control Monitoring (sample mode)
+
+on:
+  schedule:
+    - cron: "0 12 * * 1"   # every Monday 12:00 UTC
+  workflow_dispatch:
+
+jobs:
+  run-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run control checks on sample data
+        shell: pwsh
+        run: ./Invoke-ControlMonitoring.ps1 -Mode Sample
+      - name: Upload reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: control-report
+          path: output/
